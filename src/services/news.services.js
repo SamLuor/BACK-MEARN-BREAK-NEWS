@@ -1,7 +1,12 @@
 import News from "../models/News.js";
 
-const createNews = (body) => News.create(body);
+export const createNews = (body) => News.create(body);
 
-const findAllNews = () => News.find();
+export const findAllNews = (limit, offset) =>
+  News.find().sort({ _id: -1 }).skip(offset).limit(limit).populate("user");
+export const countNews = () => News.countDocuments();
 
-export { createNews, findAllNews };
+export const topNewsService = () =>
+  News.findOne().sort({ _id: -1 }).populate("user");
+
+export const findByIdService = (id) => News.findById(id).populate("user");
