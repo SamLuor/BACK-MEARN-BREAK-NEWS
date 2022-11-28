@@ -31,3 +31,27 @@ export const validUser = async (req, res, next) => {
     res.status(500).send({ message: err.message });
   }
 };
+export const validFields = async (req, res, next) => {
+  const { title, text, banner } = req.body;
+
+  console.log(req.method);
+
+  if (req.method === "PATCH") {
+    if (!title && !text && !banner) {
+      console.log("PATCH");
+      return res.status(400).send({
+        message: "Submit anything field",
+      });
+    }
+  }
+
+  if (req.method === "POST") {
+    if (!title || !text || !banner) {
+      return res.status(400).send({
+        message: "Submit all fields",
+      });
+    }
+  }
+
+  next();
+};

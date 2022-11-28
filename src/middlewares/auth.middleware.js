@@ -1,25 +1,27 @@
 import jwt from "jsonwebtoken";
 import userServices from "../services/user.services.js";
-import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const authMiddleware = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
-    if (!authorization) {
-      return res.status(401);
+    if (!authorization || authorization == undefined) {
+      return res.status(401).send({ message: "Unauthorized" });
     }
 
     const parts = authorization.split(" ");
 
     if (parts.length !== 2) {
-      return res.status(401);
+      return res.status(401).send({ message: "Unauthorized" });
     }
 
     const [schema, token] = parts;
 
     if (schema !== "Bearer") {
-      return res.send(401);
+      return res.send(401).send({ message: "Unauthorized" });
     }
 
     jwt.verify(token, process.env.SECRET_JWT, async (error, decoded) => {
