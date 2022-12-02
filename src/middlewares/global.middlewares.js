@@ -8,6 +8,7 @@ export const validId = (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).send({ message: "Invalid ID" });
     }
+
     next();
   } catch (err) {
     res.status(500).send({ message: err.message });
